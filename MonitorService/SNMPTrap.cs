@@ -80,7 +80,6 @@ namespace MonitorService
             return result.ToString();
         }
 
-        // Public methods for debugging
         public void StartDebug()
         {
             StartListening();

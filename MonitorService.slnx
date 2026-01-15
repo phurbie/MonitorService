@@ -1,3 +1,6 @@
 <Solution>
-  <Project Path="MonitorService/MonitorService.csproj" />
+  <Folder Name="/Solution Items/">
+    <File Path="README.md" />
+  </Folder>
+  <Project Path="MonitorService/MonitorService.csproj" Id="2b637b24-9a1f-4af0-a893-01ae72c9bef6" />
 </Solution>
