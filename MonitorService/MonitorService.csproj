@@ -54,6 +54,7 @@
     <Compile Include="SNMPTrap.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="SQL.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
