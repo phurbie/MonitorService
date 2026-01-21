@@ -5,8 +5,8 @@ namespace MonitorService
 {
     public class SQLStorage
     {
-        private readonly string _connectionString;
-        private readonly string _databaseName = "MonitorDB";
+        public readonly string _connectionString;
+        public readonly string _databaseName = "MonitorDB";
 
         public SQLStorage()
         {
@@ -62,9 +62,15 @@ namespace MonitorService
                     {
                         useCommand.ExecuteNonQuery();
                     }
-                    var createTableQuery = @"
+                    var createSNMPTableQuery = @"
                         IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='SNMPTrap' AND xtype='U') CREATE TABLE SNMPTrap (Id INT IDENTITY(1,1) PRIMARY KEY, Date DATETIME NOT NULL, Location NVARCHAR(255) NOT NULL, Error NVARCHAR(MAX) NOT NULL, SNMPv NVARCHAR(50) NOT NULL, Community NVARCHAR(255) NOT NULL, PDU NVARCHAR(50) NOT NULL, Request NVARCHAR(255) NOT NULL, VarBind NVARCHAR(MAX) NOT NULL, FullHex NVARCHAR(MAX) NOT NULL)";
-                    using (var command = new SqlCommand(createTableQuery, connection))
+                    using (var command = new SqlCommand(createSNMPTableQuery, connection))
+                    {
+                        command.ExecuteNonQuery();
+                    }
+                    var createServersTableQuery = @"
+                        IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Servers' AND xtype='U') CREATE TABLE Servers (Id INT IDENTITY(1,1) PRIMARY KEY, Server NVARCHAR(50) NOT NULL)";
+                    using (var command = new SqlCommand(createServersTableQuery, connection))
                     {
                         command.ExecuteNonQuery();
                     }

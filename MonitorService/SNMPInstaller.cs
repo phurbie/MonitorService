@@ -24,7 +24,7 @@ namespace MonitorService
             this.serviceProcessInstaller.Username = null;
             this.serviceInstaller.ServiceName = "MonitorService";
             this.serviceInstaller.DisplayName = "Monitor Service";
-            this.serviceInstaller.Description = "Captures SNMP data and logs it to a text file.";
+            this.serviceInstaller.Description = "Captures SNMP data in SQL and runs a website to view the data in SQL.";
             this.serviceInstaller.StartType = ServiceStartMode.Manual;
             this.Installers.AddRange(new Installer[]
             {
