@@ -1,8 +1,8 @@
 # MonitorService
 
-This service captures SNMP hex data, decodes some of the hex into a readable format and saves it to a SQL Database (localhost\MONITORSERVICE).
+This service captures SNMP hex data, decodes some of the hex into a readable format and saves it to a SQL Database (localhost\MONITORSERVICE). It runs as website to view SNMP in the database on https://localhost:8443
 
-I built it to target Windows Server 2019 with .NET Framework 4.7.2 and SQL Server 2025 Express.
+I built it to target Windows Server 2019 with .NET Framework 4.7.2 and SQL Server 2019 Express.
 
 ## Installation:
 As a service, create a folder and run the following in Terminal as Administrator:

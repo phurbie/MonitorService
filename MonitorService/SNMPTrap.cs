@@ -14,6 +14,7 @@ namespace MonitorService
         private bool isRunning = false;
         int port = 162;
         private readonly SQLStorage _sqlStorage;
+        private WebServer _webServer;
 
         internal SNMPTrap()
         {
@@ -24,16 +25,19 @@ namespace MonitorService
         private void InitializeComponent()
         {
             this.ServiceName = "MonitorService";
+            _webServer = new WebServer();
         }
 
         protected override void OnStart(string[] args)
         {
             _sqlStorage.InitializeDatabase();
+            _webServer.Start();
             StartListening();
         }
 
         protected override void OnStop()
         {
+            _webServer.Stop();
             StopListening();
         }
 
@@ -210,7 +214,6 @@ namespace MonitorService
                 }
 
                 string hexData = BitConverter.ToString(data).Replace("-", " ");
-
                 _sqlStorage.StoreSNMPData(DateTime.Now, remoteEndPoint.Address.ToString(), remoteEndPoint.Port, errorInfo, snmpVersion, community, pdu, request, varBind, hexData);
             }
             catch (Exception ex)
@@ -225,14 +228,11 @@ namespace MonitorService
         {
             byte first = data[offset++];
             if ((first & 0x80) == 0) return first;
-
             int lenBytes = first & 0x7F;
             if (lenBytes > 4) throw new Exception("Length too long");
-
             int length = 0;
             for (int i = 0; i < lenBytes; i++)
                 length = (length << 8) | data[offset++];
-
             return length;
         }
 
@@ -274,33 +274,26 @@ namespace MonitorService
                     long iVal = (length > 0 && (data[offset] & 0x80) != 0) ? -1L : 0L;
                     for (int i = 0; i < length; i++) iVal = (iVal << 8) | data[offset++];
                     return iVal.ToString();
-
                 case 0x04:
                     string str = Encoding.ASCII.GetString(data, offset, length);
                     return Printable(str) ? $"\"{str}\"" : BitConverter.ToString(data, offset, length).Replace("-", " ");
-
                 case 0x05:
                     return "NULL";
-
                 case 0x06:
                     return DecodeOid(data, offset, length);
-
                 case 0x40:
                     if (length == 4) return $"{data[offset]}.{data[offset + 1]}.{data[offset + 2]}.{data[offset + 3]}";
                     return BitConverter.ToString(data, offset, length).Replace("-", " ");
-
                 case 0x41:
                 case 0x42:
                 case 0x46:
                     uint uVal = 0;
                     for (int i = 0; i < length; i++) uVal = (uVal << 8) | data[offset++];
                     return uVal.ToString();
-
                 case 0x43:
                     uint tt = 0;
                     for (int i = 0; i < length; i++) tt = (tt << 8) | data[offset++];
                     return $"TimeTicks({tt})";
-
                 default:
                     return $"[Tag 0x{tag:X2}: {BitConverter.ToString(data, offset, length).Replace("-", " ")}]";
             }
@@ -311,12 +304,14 @@ namespace MonitorService
         public void StartDebug()
         {
             _sqlStorage.InitializeDatabase();
+            _webServer.Start();
             StartListening();
             Console.WriteLine("Listener started in debug mode");
         }
 
         public void StopDebug()
         {
+            _webServer.Stop();
             StopListening();
             Console.WriteLine("Listener stopped in debug mode");
         }

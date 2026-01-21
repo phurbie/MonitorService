@@ -55,6 +55,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="SQL.cs" />
+    <Compile Include="WebServer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -10,7 +10,7 @@ namespace MonitorService
 
         public SQLStorage()
         {
-            _connectionString = @"Data Source=localhost\MONITORSERVICE;Integrated Security=True;";
+            _connectionString = @"Data Source=localhost\MONITORSERVICE;Integrated Security=True;Encrypt=true;TrustServerCertificate=True;";
         }
 
         public void StoreSNMPData(DateTime timestamp, string ipAddress, int port, string errorInfo, string snmpVersion, string community, string pdu, string request, string varBind, string hexData)
