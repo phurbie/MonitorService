@@ -37,6 +37,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -46,8 +47,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="JsonParse.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RemoteCalls.cs" />
     <Compile Include="SNMPInstaller.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -55,6 +58,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="SQL.cs" />
+    <Compile Include="SSLCertificate.cs" />
     <Compile Include="WebServer.cs" />
   </ItemGroup>
   <ItemGroup>
